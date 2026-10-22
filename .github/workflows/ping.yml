@@ -1,0 +1,20 @@
+name: Keep Render awake
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: render-ping
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping link-video-bot
+        run: curl -fsS --retry 3 --retry-delay 15 --max-time 90 https://link-video-bot.onrender.com/ > /dev/null
